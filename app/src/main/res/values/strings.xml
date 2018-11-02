@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">OverdueSongFinder</string>
+    <string name="listOfSongsLabel">List of Songs</string>
+    <string name="menu_info">Info</string>
+    <string name="menu_findSongs">Find</string>
+    <string name="menu_purchase">Purchase</string>
 </resources>
