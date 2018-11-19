@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 public class SongModel {
     @ColumnInfo(name = "name")
     @NonNull
+    @PrimaryKey
     private String name;
 
     @ColumnInfo(name = "artist")
