@@ -18,6 +18,8 @@ public class ListOfSongsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_of_songs);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+
     }
 
     @Override
