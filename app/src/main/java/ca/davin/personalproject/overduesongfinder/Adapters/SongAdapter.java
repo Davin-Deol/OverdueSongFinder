@@ -9,10 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+
+import ca.davin.personalproject.overduesongfinder.Activities.SongDetailsActivity;
 import ca.davin.personalproject.overduesongfinder.R;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import ca.davin.personalproject.overduesongfinder.Database.SongModel;
 
@@ -125,29 +129,20 @@ public class SongAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        SongModel device = (SongModel) getGroup(groupPosition);
+        SongModel song = (SongModel) getGroup(groupPosition);
 
         convertView = LayoutInflater.from(getContext()).inflate(R.layout.song_list_parent_layout, parent, false);
-        /*
+
         // Lookup view for data population
-        TextView deviceNameTextView = convertView.findViewById(R.id.deviceName);
-        TextView deviceTypeTextView = convertView.findViewById(R.id.deviceType);
-        TextView deviceStatusTextView = convertView.findViewById(R.id.deviceStatus);
+        TextView songNameTextView = convertView.findViewById(R.id.listOfSongs_SongName);
+        TextView songPriceTextView = convertView.findViewById(R.id.listOfSongs_SongPrice);
 
-        String deviceName = device.getName();
-        String deviceType = convertFirstLettersToUpperCase(device.getType());
-        String deviceStatus = convertFirstLettersToUpperCase(device.getStatus());
+        String songName = song.getName();
+        Double songPrice = song.getPrice();
 
+        songNameTextView.setText(songName);
+        songPriceTextView.setText(String.format(Locale.CANADA, "%2.2f", songPrice));
 
-        deviceNameTextView.setText(deviceName);
-        deviceTypeTextView.setText(deviceType);
-        deviceStatusTextView.setText(deviceStatus);
-
-        if (!deviceStatus.equals("Active")) {
-            deviceStatusTextView.setBackground(convertView.getResources().getDrawable(R.drawable.device_status_background_red));
-        }
-
-        */
         // Return the completed view to render on screen
         return convertView;
     }
@@ -170,65 +165,23 @@ public class SongAdapter extends BaseExpandableListAdapter {
         // Now we inflate the view so that we have access to the elements in it
         convertView = LayoutInflater.from(getContext()).inflate(R.layout.song_list_child_layout, parent, false);
 
-        // Holds the position of the group that the child resides in. We need this to access the
-        // device that the group view references.
-        final int index = groupPosition;
+        final SongModel currentSong = songs.get(groupPosition);
 
-        /*
         // Now we set the onClick listeners for when the user selects what activity to go to for the
         // device associated with the group we're in
-        convertView.findViewById(R.id.deviceCharts).setOnClickListener(new View.OnClickListener() {
+        convertView.findViewById(R.id.listOfSongs_infoImageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle b = new Bundle();
-                String currentDevice = devices.get(index).getName();
-                new SharedPreferencesVariables(getContext()).setLastDevice(currentDevice);
-                Intent intent = new Intent(activity, ChartsPage.class);
-                intent.putExtra("CurrentDevice", currentDevice);
-                b.putSerializable("ARRAYLIST", devices);
-                b.putInt("CurrentDeviceIndex", 0);
-                intent.putExtra("BUNDLE",b);
-                intent.putExtras(b);
+                Toast.makeText(context, "Change Activity", Toast.LENGTH_SHORT).show();
+                /*
+                Intent intent = new Intent(activity, SongDetailsActivity.class);
+                intent.putExtra("SelectedSongName", currentSong.getName());
+                intent.putExtra("SelectedSongArtist", currentSong.getArtist());
                 activity.startActivity(intent);
                 activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                */
             }
         });
-        convertView.findViewById(R.id.deviceMap).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle b = new Bundle();
-                String currentDevice = devices.get(index).getName();
-                new SharedPreferencesVariables(getContext()).setLastDevice(currentDevice);
-                Intent intent = new Intent(activity, MapActivity.class);
-                intent.putExtra("CurrentDevice", currentDevice);
-                b.putSerializable("ARRAYLIST", devices);
-                b.putInt("CurrentDeviceIndex", 0);
-                intent.putExtra("BUNDLE",b);
-                intent.putExtras(b);
-                activity.startActivity(intent);
-                activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });
-        convertView.findViewById(R.id.deviceAlarms).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle b = new Bundle();
-                String currentDevice = devices.get(index).getName();
-                new SharedPreferencesVariables(getContext()).setLastDevice(currentDevice);
-                Intent intent = new Intent(activity, AlarmsActivity.class);
-                intent.putExtra("CurrentDevice", currentDevice);
-                b.putSerializable("ARRAYLIST", devices);
-                b.putInt("CurrentDeviceIndex", 0);
-                intent.putExtra("BUNDLE",b);
-                intent.putExtras(b);
-                activity.startActivity(intent);
-                activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });
-
-        if (isLastChild)
-            convertView.setBackgroundColor(getContext().getResources().getColor(R.color.colorGrey));
-            */
         return convertView;
     }
 

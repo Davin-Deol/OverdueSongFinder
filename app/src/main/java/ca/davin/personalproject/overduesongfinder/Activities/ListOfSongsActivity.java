@@ -6,12 +6,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import ca.davin.personalproject.overduesongfinder.Adapters.SongAdapter;
+import ca.davin.personalproject.overduesongfinder.Database.SongModel;
 import ca.davin.personalproject.overduesongfinder.R;
 
 public class ListOfSongsActivity extends AppCompatActivity {
 
+    ExpandableListView songsListView;
+    private ArrayList<SongModel> songs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +26,24 @@ public class ListOfSongsActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        songsListView = findViewById(R.id.listOfSongs_listView);
 
+        songs = new ArrayList<>();
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songs.add(new SongModel("Name", "Artist"));
+        songsListView.setAdapter(new SongAdapter(ListOfSongsActivity.this, songs));
     }
 
     @Override
