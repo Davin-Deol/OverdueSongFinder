@@ -14,7 +14,7 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
-    <style name="ListOfSongsEditText">
+    <style name="ListOfSongsTextView">
         <item name="android:maxLines">1</item>
         <item name="android:ems">10</item>
         <item name="android:padding">@dimen/activity_vertical_margin</item>

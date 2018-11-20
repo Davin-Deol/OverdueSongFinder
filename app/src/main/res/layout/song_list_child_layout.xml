@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_info_outline_24dp"
-            style="@style/ListOfSongsEditText"/>
+            style="@style/ListOfSongsTextView"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"

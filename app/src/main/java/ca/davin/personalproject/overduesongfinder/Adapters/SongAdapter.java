@@ -33,6 +33,8 @@ public class SongAdapter extends BaseExpandableListAdapter {
     // Stores the groups views and their associated child view
     private String[][] options;
 
+    private MediaMetadataRetriever mmr;
+
     /**
      * For this constructor we need to update our global variables so that the methods have access to the
      * @param context - As stated in the variables section, this gives us access to the Resources folder
@@ -41,6 +43,7 @@ public class SongAdapter extends BaseExpandableListAdapter {
     public SongAdapter(Activity context, ArrayList<SongModel> songs) {
         setContext(context);
         setSongs(songs);
+        mmr = new MediaMetadataRetriever();
         /*
         options = new String[][]{
                 {context.getResources().getString(R.string.menu_charts),
@@ -139,7 +142,6 @@ public class SongAdapter extends BaseExpandableListAdapter {
         TextView songNameTextView = convertView.findViewById(R.id.listOfSongs_SongName);
         TextView songPriceTextView = convertView.findViewById(R.id.listOfSongs_SongPrice);
 
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         mmr.setDataSource(song.getFilePath());
 
         String songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
@@ -180,14 +182,12 @@ public class SongAdapter extends BaseExpandableListAdapter {
         convertView.findViewById(R.id.listOfSongs_infoImageView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Change Activity", Toast.LENGTH_SHORT).show();
-                /*
+                // Toast.makeText(context, "Change Activity", Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(activity, SongDetailsActivity.class);
-                intent.putExtra("SelectedSongName", currentSong.getName());
-                intent.putExtra("SelectedSongArtist", currentSong.getArtist());
+                intent.putExtra("SelectedSongFilePath", currentSong.getFilePath());
                 activity.startActivity(intent);
-                activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                */
+                // activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         return convertView;

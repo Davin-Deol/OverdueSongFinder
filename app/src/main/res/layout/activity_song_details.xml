@@ -6,4 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".Activities.SongDetailsActivity">
 
+    <include layout="@layout/menu_toolbar"
+        android:id="@+id/toolbar"/>
+    <ImageView
+        android:id="@+id/songsDetails_artImageView"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:src="@drawable/ic_attach_money_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginTop="@dimen/songDetails_art_margin"/>
+    <TextView
+        android:id="@+id/songsDetails_titleImageView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/songsDetails_artImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/defaultSongName"
+        style="@style/ListOfSongsTextView" />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/songsDetails_titleImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/defaultSongName"
+        style="@style/ListOfSongsTextView" />
 </android.support.constraint.ConstraintLayout>
