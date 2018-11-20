@@ -7,31 +7,21 @@ import android.support.annotation.NonNull;
 
 @Entity(tableName = "Songs")
 public class SongModel {
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "fileName")
     @NonNull
     @PrimaryKey
-    private String name;
-
-    @ColumnInfo(name = "artist")
-    private String artist;
+    private String filePath;
 
     @ColumnInfo(name = "price")
     private double price;
 
-    public SongModel(String name, String artist) {
-        setName(name);
-        setArtist(artist);
+    public SongModel(String filePath) {
+        setFilePath(filePath);
     }
 
-    public void setName(String name) {
-        if (name != null) {
-            this.name = name;
-        }
-    }
-
-    public void setArtist(String artist) {
-        if (artist != null) {
-            this.artist = artist;
+    public void setFilePath(String filePath) {
+        if (filePath != null) {
+            this.filePath = filePath;
         }
     }
 
@@ -41,12 +31,8 @@ public class SongModel {
         }
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public String getArtist() {
-        return this.artist;
+    public String getFilePath() {
+        return this.filePath;
     }
 
     public double getPrice() {

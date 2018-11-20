@@ -3,12 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
-    <ImageView
-        android:id="@+id/listOfSongs_infoImageView"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="start"
-        android:src="@drawable/ic_info_outline_24dp"
-        style="@style/ListOfSongsEditText"/>
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/listOfSongs_infoImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_info_outline_24dp"
+            style="@style/ListOfSongsEditText"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="end">
+    </LinearLayout>
 </LinearLayout>

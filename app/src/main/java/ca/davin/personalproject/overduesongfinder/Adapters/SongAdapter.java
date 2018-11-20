@@ -3,6 +3,7 @@ package ca.davin.personalproject.overduesongfinder.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import ca.davin.personalproject.overduesongfinder.R;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -25,7 +27,7 @@ public class SongAdapter extends BaseExpandableListAdapter {
     // For access to the Resources
     private Context context;
 
-    // Stores the list of devices to be displayed
+    // Stores the list of songs to be displayed
     private ArrayList<SongModel> songs;
 
     // Stores the groups views and their associated child view
@@ -137,11 +139,17 @@ public class SongAdapter extends BaseExpandableListAdapter {
         TextView songNameTextView = convertView.findViewById(R.id.listOfSongs_SongName);
         TextView songPriceTextView = convertView.findViewById(R.id.listOfSongs_SongPrice);
 
-        String songName = song.getName();
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(song.getFilePath());
+
+        String songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
         Double songPrice = song.getPrice();
 
         songNameTextView.setText(songName);
-        songPriceTextView.setText(String.format(Locale.CANADA, "%2.2f", songPrice));
+        if (songPrice > 0)
+            songPriceTextView.setText(String.format(Locale.CANADA, "%2.2f", songPrice));
+        else
+            songPriceTextView.setText("FREE");
 
         // Return the completed view to render on screen
         return convertView;
@@ -212,7 +220,7 @@ public class SongAdapter extends BaseExpandableListAdapter {
     }
 
     /**
-     * Assigns the value given be the developer, to the global variable.
+     * Assigns the value given by the developer, to the global variable.
      * @param songs - holds the list of songs containing the data we need to display
      */
     public void setSongs(ArrayList<SongModel> songs) {
@@ -220,7 +228,7 @@ public class SongAdapter extends BaseExpandableListAdapter {
     }
 
     /**
-     * @return the list of devices containing the data we need to display
+     * @return the list of songs containing the data we need to display
      */
     public ArrayList<SongModel> getSongs() {
         return this.songs;
