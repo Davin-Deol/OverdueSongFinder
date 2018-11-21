@@ -8,4 +8,11 @@
     <string name="menu_purchaseSong">Purchase Song</string>
     <string name="defaultSongName">Sample</string>
     <string name="defaultSongPrice">Undetermined</string>
+
+    <string name="songDetails_Title">Title</string>
+    <string name="songDetails_Artist">Artist</string>
+    <string name="songDetails_Album">Album</string>
+    <string name="songDetails_AlbumArtist">Album Artist</string>
+    <string name="songDetails_Genre">Genre</string>
+    <string name="songDetails_Composer">Composer</string>
 </resources>

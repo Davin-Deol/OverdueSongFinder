@@ -13,7 +13,7 @@ public class SongModel {
     private String filePath;
 
     @ColumnInfo(name = "price")
-    private double price;
+    private Double price;
 
     public SongModel(String filePath) {
         setFilePath(filePath);
@@ -35,7 +35,7 @@ public class SongModel {
         return this.filePath;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return this.price;
     }
 }

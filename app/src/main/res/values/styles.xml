@@ -1,12 +1,16 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="ListOfSongs" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorOrange</item>
+        <item name="colorPrimaryDark">@color/colorOrangeDark</item>
+        <item name="colorAccent">@color/colorBlue</item>
         <item name="android:windowBackground">@drawable/window_background_gradient_orange</item>
+    </style>
+
+    <style name="SongDetails" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorBlue</item>
+        <item name="colorPrimaryDark">@color/colorBlueDark</item>
+        <item name="colorAccent">@color/colorOrange</item>
+        <item name="android:windowBackground">@drawable/window_background_gradient_blue</item>
     </style>
 
     <style name="OverflowTheme">

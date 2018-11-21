@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +12,7 @@ import android.widget.BaseExpandableListAdapter;
 import ca.davin.personalproject.overduesongfinder.Activities.SongDetailsActivity;
 import ca.davin.personalproject.overduesongfinder.R;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -148,7 +144,9 @@ public class SongAdapter extends BaseExpandableListAdapter {
         Double songPrice = song.getPrice();
 
         songNameTextView.setText(songName);
-        if (songPrice > 0)
+        if (songPrice == null)
+            songPriceTextView.setText("");
+        else if (songPrice > 0)
             songPriceTextView.setText(String.format(Locale.CANADA, "%2.2f", songPrice));
         else
             songPriceTextView.setText("FREE");
@@ -187,6 +185,7 @@ public class SongAdapter extends BaseExpandableListAdapter {
                 Intent intent = new Intent(activity, SongDetailsActivity.class);
                 intent.putExtra("SelectedSongFilePath", currentSong.getFilePath());
                 activity.startActivity(intent);
+                activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 // activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
