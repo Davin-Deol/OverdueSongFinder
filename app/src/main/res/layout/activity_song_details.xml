@@ -55,8 +55,7 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/songDetails_Artist"
-                    android:text="@string/defaultSongName" />
+                    android:hint="@string/songDetails_Artist"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -66,8 +65,7 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/songDetails_Album"
-                    android:text="@string/defaultSongName" />
+                    android:hint="@string/songDetails_Album"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -77,8 +75,7 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/songDetails_AlbumArtist"
-                    android:text="@string/defaultSongName" />
+                    android:hint="@string/songDetails_AlbumArtist" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -88,8 +85,7 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/songDetails_Genre"
-                    android:text="@string/defaultSongName" />
+                    android:hint="@string/songDetails_Genre" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -99,8 +95,18 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/songDetails_Composer"
-                    android:text="@string/defaultSongName" />
+                    android:hint="@string/songDetails_Composer" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/songsDetails_yearTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/songDetails_Year"
+                    android:inputType="number"/>
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </ScrollView>

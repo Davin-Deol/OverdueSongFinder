@@ -69,7 +69,7 @@ public class SongDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_list_of_songs, menu);
+        getMenuInflater().inflate(R.menu.menu_song_details, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

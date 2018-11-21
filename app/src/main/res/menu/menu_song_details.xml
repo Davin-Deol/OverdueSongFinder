@@ -2,29 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/empty"
-        android:title="XXX"
-        android:orderInCategory="101"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_more_vert_24dp">
-
-        <menu>
-            <item
-                android:id="@+id/action_findSong"
-                android:icon="@drawable/ic_language_24dp"
-                android:title="@string/menu_findSong"
-                app:showAsAction="ifRoom"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"/>
-            <item
-                android:id="@+id/action_purchaseSong"
-                android:icon="@drawable/ic_attach_money_24dp"
-                android:title="@string/menu_purchaseSong"
-                app:showAsAction="ifRoom"/>
-        </menu>
-
-    </item>
+        android:id="@+id/action_findSong"
+        android:icon="@drawable/ic_language_24dp"
+        android:title="@string/menu_findSong"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_purchaseSong"
+        android:icon="@drawable/ic_attach_money_24dp"
+        android:title="@string/menu_purchaseSong"
+        app:showAsAction="ifRoom"/>
 
 </menu>

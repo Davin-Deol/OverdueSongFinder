@@ -15,4 +15,5 @@
     <string name="songDetails_AlbumArtist">Album Artist</string>
     <string name="songDetails_Genre">Genre</string>
     <string name="songDetails_Composer">Composer</string>
+    <string name="songDetails_Year">Year</string>
 </resources>
