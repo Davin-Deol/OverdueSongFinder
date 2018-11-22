@@ -39,4 +39,7 @@ dependencies {
 
     // optional - Guava support for Room, including Optional and ListenableFuture
     implementation "android.arch.persistence.room:guava:$room_version"
+
+    // HTTP
+    implementation 'com.android.volley:volley:1.1.1'
 }

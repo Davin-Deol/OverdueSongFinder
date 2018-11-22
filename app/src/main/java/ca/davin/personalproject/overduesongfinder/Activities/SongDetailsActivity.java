@@ -7,13 +7,25 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.support.design.widget.TextInputLayout;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import ca.davin.personalproject.overduesongfinder.Database.SongModel;
+import ca.davin.personalproject.overduesongfinder.Fragment.PossibleSongsDialogFragment;
 import ca.davin.personalproject.overduesongfinder.R;
 
 public class SongDetailsActivity extends AppCompatActivity {
@@ -27,6 +39,7 @@ public class SongDetailsActivity extends AppCompatActivity {
     private TextInputLayout albumArtistTextInputLayout;
     private TextInputLayout genreTextInputLayout;
     private TextInputLayout composerTextInputLayout;
+    private JSONObject responseJSON;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +47,8 @@ public class SongDetailsActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         mmr = new MediaMetadataRetriever();
         Bundle b = getIntent().getExtras();
-        mmr.setDataSource(b.getString("SelectedSongFilePath"));
+        currentSong = new SongModel(b.getString("SelectedSongFilePath"));
+        mmr.setDataSource(currentSong.getFilePath());
         myToolbar.setTitle(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,7 +95,42 @@ public class SongDetailsActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
             case R.id.action_findSong:
-                Toast.makeText(this, "Find Song Pressed", Toast.LENGTH_SHORT).show();
+                // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(this);
+                String songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+                songName = songName.replace(' ', '+');
+                String url ="https://itunes.apple.com/search?term=" + songName + "&entity=song&attribute=songTerm";
+
+                // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    responseJSON = new JSONObject(response);
+                                    if (responseJSON.getInt("resultCount") > 1) {
+                                        PossibleSongsDialogFragment possibleSongsDialogFragment = new PossibleSongsDialogFragment();
+                                        Bundle b = new Bundle();
+                                        String results = responseJSON.getJSONArray("results").toString();
+                                        b.putString("results", results);
+                                        b.putInt("resultCount", responseJSON.getInt("resultCount"));
+                                        possibleSongsDialogFragment.setArguments(b);
+                                        possibleSongsDialogFragment.show(getSupportFragmentManager(), "resultingSongs");
+                                    }
+                                } catch (JSONException jEx) {
+                                    Log.d("JSONException: ", jEx.getMessage());
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(SongDetailsActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // Add the request to the RequestQueue.
+                queue.add(stringRequest);
                 return true;
             case R.id.action_purchaseSong:
                 Toast.makeText(this, "Purchase Song Pressed", Toast.LENGTH_SHORT).show();

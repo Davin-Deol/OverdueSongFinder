@@ -5,36 +5,33 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "Songs")
-public class SongModel {
+@Entity(tableName = "SongToStore")
+public class SongToStore {
     @ColumnInfo(name = "fileName")
     @PrimaryKey
     private String filePath;
 
-    @ColumnInfo(name = "price")
-    private Double price;
+    @ColumnInfo(name = "storeURL")
+    private String storeURL;
 
-    public SongModel(String filePath) {
+    public SongToStore(String filePath, String storeURL) {
         setFilePath(filePath);
+        setStoreURL(storeURL);
     }
-
     public void setFilePath(String filePath) {
         if (filePath != null) {
             this.filePath = filePath;
         }
     }
-
-    public void setPrice(double price) {
-        if (price >= 0) {
-            this.price = price;
-        }
-    }
-
     public String getFilePath() {
         return this.filePath;
     }
-
-    public Double getPrice() {
-        return this.price;
+    public void setStoreURL(String storeURL) {
+        if (storeURL != null) {
+            this.storeURL = storeURL;
+        }
+    }
+    public String getStoreURL() {
+        return this.storeURL;
     }
 }
