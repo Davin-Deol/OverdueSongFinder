@@ -1,12 +1,18 @@
 package ca.davin.personalproject.overduesongfinder.Activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadata;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.NetworkOnMainThreadException;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
@@ -14,10 +20,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.design.widget.TextInputLayout;
 
@@ -29,6 +41,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.cmc.music.common.ID3WriteException;
+import org.cmc.music.metadata.ImageData;
 import org.cmc.music.metadata.MusicMetadata;
 import org.cmc.music.metadata.MusicMetadataSet;
 import org.cmc.music.myid3.MyID3;
@@ -36,14 +49,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import ca.davin.personalproject.overduesongfinder.Database.AppDatabase;
 import ca.davin.personalproject.overduesongfinder.Database.SongModel;
 import ca.davin.personalproject.overduesongfinder.Fragment.PossibleSongsDialogFragment;
 import ca.davin.personalproject.overduesongfinder.R;
@@ -53,6 +71,8 @@ public class SongDetailsActivity extends AppCompatActivity implements PossibleSo
     private SongModel currentSong;
     private MediaMetadataRetriever mmr;
     private ImageView artImageView;
+    private TextView priceTextView;
+    private TextView storeTextView;
     private TextInputLayout titleTextInputLayout;
     private TextInputLayout artistTextInputLayout;
     private TextInputLayout albumTextInputLayout;
@@ -75,6 +95,8 @@ public class SongDetailsActivity extends AppCompatActivity implements PossibleSo
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        priceTextView = (TextView) findViewById(R.id.songsDetails_priceTextView);
+        storeTextView = (TextView) findViewById(R.id.songsDetails_storeTextView);
         artImageView = (ImageView) findViewById(R.id.songsDetails_artImageView);
         titleTextInputLayout = (TextInputLayout) findViewById(R.id.songsDetails_titleTextInputLayout);
         artistTextInputLayout = (TextInputLayout) findViewById(R.id.songsDetails_artistTextInputLayout);
@@ -193,26 +215,52 @@ public class SongDetailsActivity extends AppCompatActivity implements PossibleSo
                         public void onResponse(String response) {
                             try {
                                 responseJSON = new JSONObject(response);
-                                JSONObject resultJSONObject = responseJSON.getJSONArray("results").getJSONObject(0);
+                                final JSONObject resultJSONObject = responseJSON.getJSONArray("results").getJSONObject(0);
+
+                                String urlString = resultJSONObject.getString("artworkUrl100");
+                                new DownloadImageTask(artImageView).execute(urlString);
+                                /*
+                                URL url = new URL(urlString);
+                                url.openConnection();
+                                url.getContent();
+                                Bitmap bitmap = BitmapFactory.decodeStream((InputStream) url.getContent());
+                                artImageView.setImageBitmap(bitmap);
+                                */
+
+                                priceTextView.setText("Price: " + resultJSONObject.getString("trackPrice") + " " + resultJSONObject.getString("currency"));
+                                SpannableString spannableString = new SpannableString("Store: iTunes");
+                                ClickableSpan clickableSpan = new ClickableSpan() {
+                                    @Override
+                                    public void onClick(View textView) {
+                                        try {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(resultJSONObject.getString("trackViewUrl"))));
+                                        } catch (JSONException jEx) {
+                                            Log.d("JSONException: ", jEx.getMessage());
+                                        }
+                                    }
+                                };
+                                spannableString.setSpan(clickableSpan, 7, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                storeTextView.setText(spannableString, TextView.BufferType.SPANNABLE);
+                                storeTextView.setMovementMethod(LinkMovementMethod.getInstance());
+                                //storeTextView.setText("Store: <a href=\"" + resultJSONObject.getString("trackViewUrl") + "\">iTunes</a>");
+                                //storeTextView.setMovementMethod(LinkMovementMethod.getInstance());
                                 titleTextInputLayout.getEditText().setText(resultJSONObject.getString("trackName"));
                                 artistTextInputLayout.getEditText().setText(resultJSONObject.getString("artistName"));
                                 albumTextInputLayout.getEditText().setText(resultJSONObject.getString("collectionName"));
                                 albumArtistTextInputLayout.getEditText().setText(resultJSONObject.getString("artistName"));
                                 genreTextInputLayout.getEditText().setText(resultJSONObject.getString("primaryGenreName"));
                                 currentSong.setPrice(resultJSONObject.getDouble("trackPrice"));
+
                                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                                try {
-                                    Date date = format.parse(resultJSONObject.getString("releaseDate"));
-                                    Calendar cal = Calendar.getInstance();
-                                    cal.setTime(date);
-                                    yearTextInputLayout.getEditText().setText("" + cal.get(Calendar.YEAR));
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+                                Date date = format.parse(resultJSONObject.getString("releaseDate"));
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTime(date);
+                                yearTextInputLayout.getEditText().setText("" + cal.get(Calendar.YEAR));
                             } catch (JSONException jEx) {
                                 Log.d("JSONException: ", jEx.getMessage());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
-
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -237,6 +285,12 @@ public class SongDetailsActivity extends AppCompatActivity implements PossibleSo
             meta.setGenre(genreTextInputLayout.getEditText().getText().toString());
             meta.setComposer(composerTextInputLayout.getEditText().getText().toString());
             meta.setYear(yearTextInputLayout.getEditText().getText().toString());
+
+            Bitmap bitmap = ((BitmapDrawable) artImageView.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageInByte = baos.toByteArray();
+            meta.addPicture(new ImageData(imageInByte, "image/jpeg", "Image", 3));
             new MyID3().update(src, src_set, meta);
         } catch (IOException ioEx) {
             Log.d("IOException: ", ioEx.getMessage());
@@ -244,6 +298,41 @@ public class SongDetailsActivity extends AppCompatActivity implements PossibleSo
             Log.d("NullPointerException: ", npEx.getMessage());
         } catch (ID3WriteException id3Ex) {
             Log.d("ID3WriteException: ", id3Ex.getMessage());
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+        private ProgressDialog mDialog;
+        private ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected void onPreExecute() {
+
+            mDialog = ProgressDialog.show(SongDetailsActivity.this,"Please wait...", "Retrieving data ...", true);
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", "image download error");
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            //set image of your imageview
+            bmImage.setImageBitmap(result);
+            //close
+            mDialog.dismiss();
         }
     }
 }

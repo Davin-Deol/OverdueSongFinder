@@ -21,15 +21,38 @@
         android:layout_gravity="center"
         android:src="@drawable/ic_music_note_24dp"
         android:layout_marginTop="@dimen/songDetails_art_margin"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+    <LinearLayout
+        android:id="@+id/songDetails_storeInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/songsDetails_artImageView"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/activity_vertical_margin">
+        <TextView
+            android:id="@+id/songsDetails_priceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price:"
+            style="@style/SongDetails_StoreInfo"/>
+        <TextView
+            android:id="@+id/songsDetails_storeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Store:"
+            style="@style/SongDetails_StoreInfo"/>
+    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/songsDetails_artImageView"
+        app:layout_constraintTop_toBottomOf="@+id/songDetails_storeInfo"
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/ListOfSongsTextView">
         <LinearLayout
