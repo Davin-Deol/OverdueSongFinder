@@ -7,6 +7,11 @@
         android:title="@string/menu_findSong"
         app:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/action_saveSong"
+        android:icon="@drawable/ic_save_24dp"
+        android:title="@string/menu_saveSong"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/action_purchaseSong"
         android:icon="@drawable/ic_attach_money_24dp"
         android:title="@string/menu_purchaseSong"

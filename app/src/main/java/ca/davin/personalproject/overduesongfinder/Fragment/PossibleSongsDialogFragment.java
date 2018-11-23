@@ -1,6 +1,7 @@
 package ca.davin.personalproject.overduesongfinder.Fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -14,10 +15,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import ca.davin.personalproject.overduesongfinder.R;
 
 public class PossibleSongsDialogFragment extends DialogFragment {
-    String[] array;
+    // Use this instance of the interface to deliver action events
+    PossibleSongsDialogListener mListener;
+
+    public interface PossibleSongsDialogListener {
+        public void onDialogItemClicked(int position);
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -28,6 +36,8 @@ public class PossibleSongsDialogFragment extends DialogFragment {
         String resultsString[] = new String[resultCount];
         JSONArray resultsJSONArray = null;
         JSONObject resultJSONObject = null;
+        ArrayList<JSONObject> resultsArrayList = new ArrayList<>();
+
         String songName = null;
         String songArtist = null;
         try {
@@ -46,8 +56,23 @@ public class PossibleSongsDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
+                        mListener.onDialogItemClicked(which);
                     }
                 });
         return builder.create();
+    }
+
+    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        // Verify that the host activity implements the callback interface
+        try {
+            // Instantiate the NoticeDialogListener so we can send events to the host
+            mListener = (PossibleSongsDialogListener) context;
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException("Must implement NoticeDialogListener");
+        }
     }
 }

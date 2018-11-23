@@ -14,19 +14,19 @@ import java.util.List;
 import ca.davin.personalproject.overduesongfinder.Database.SongModel;
 
 @Dao
-public interface SongDAO {
+public interface SongToStoreDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertSongs(SongModel... songs);
+    public void insertCaptions(SongModel... songs);
 
-    @Query("SELECT * FROM Songs")
-    public SongModel[] loadAllSongs();
+    @Query("SELECT * FROM SongToStore")
+    public SongToStoreModel[] loadAllSongToStores();
 
-    @Query("SELECT * FROM Songs WHERE filePath = :filePath LIMIT 1")
-    public SongModel find(String filePath);
+    @Query("SELECT * FROM SongToStore WHERE storeURL = :storeURL LIMIT 1")
+    public SongToStoreModel find(String storeURL);
 
     @Update
-    public void updateSongs(SongModel... songs);
+    public void updateSongToStore(SongToStoreModel... songToStoreModel);
 
     @Delete
-    public void deleteSongs(SongModel... songs);
+    public void deleteSongToStore(SongToStoreModel... songToStoreModel);
 }

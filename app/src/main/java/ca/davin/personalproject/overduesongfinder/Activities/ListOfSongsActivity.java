@@ -33,7 +33,7 @@ public class ListOfSongsActivity extends AppCompatActivity {
 
     ExpandableListView songsListView;
     private ArrayList<SongModel> songs;
-    private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS=1;
+    private final int MY_PERMISSIONS_READ_EXTERNAL_STORAGE=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +47,7 @@ public class ListOfSongsActivity extends AppCompatActivity {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_READ_EXTERNAL_STORAGE);
                 setUpListView(songs);
         } else {
             songs = getMP3Files(Environment.getExternalStorageDirectory().getPath());
@@ -74,10 +74,10 @@ public class ListOfSongsActivity extends AppCompatActivity {
                     fileList.add(songModel);
                 }
             }
-            return fileList;
         } catch (Exception e) {
-            return null;
+            Log.d("Exception: ", e.getMessage());
         }
+        return fileList;
     }
     private void setUpListView(ArrayList<SongModel> songs) {
         songsListView.setAdapter(new SongAdapter(ListOfSongsActivity.this, songs));
@@ -86,7 +86,7 @@ public class ListOfSongsActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+            case MY_PERMISSIONS_READ_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getMP3Files(Environment.getExternalStorageDirectory().getPath());

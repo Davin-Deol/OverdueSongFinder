@@ -6,6 +6,7 @@
     <string name="menu_purchase">Purchase Songs</string>
     <string name="menu_findSong">Find Song</string>
     <string name="menu_purchaseSong">Purchase Song</string>
+    <string name="menu_saveSong">Save Song</string>
     <string name="defaultSongName">Sample</string>
     <string name="defaultSongPrice">Undetermined</string>
 

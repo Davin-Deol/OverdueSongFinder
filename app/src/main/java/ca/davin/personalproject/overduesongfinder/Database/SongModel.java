@@ -7,7 +7,8 @@ import android.support.annotation.NonNull;
 
 @Entity(tableName = "Songs")
 public class SongModel {
-    @ColumnInfo(name = "fileName")
+    @ColumnInfo(name = "filePath")
+    @NonNull
     @PrimaryKey
     private String filePath;
 
