@@ -8,12 +8,11 @@ import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import ca.davin.personalproject.overduesongfinder.Database.SongModel;
 
-@Database(entities = {SongModel.class, SongToStoreModel.class}, version = 1)
+@Database(entities = {SongModel.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;
 
     public abstract SongDAO songDAO();
-    public abstract SongToStoreDAO songToStoreDAO();
 
     public static AppDatabase getInstance(Context context) {
         if (instance == null) {
