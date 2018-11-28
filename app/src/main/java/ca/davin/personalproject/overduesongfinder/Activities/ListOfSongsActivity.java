@@ -1,8 +1,10 @@
 package ca.davin.personalproject.overduesongfinder.Activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -10,16 +12,27 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import ca.davin.personalproject.overduesongfinder.Adapters.SongAdapter;
 import ca.davin.personalproject.overduesongfinder.Database.AppDatabase;
@@ -31,7 +44,8 @@ public class ListOfSongsActivity extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_READ_EXTERNAL_STORAGE=1;
 
-    ExpandableListView songsListView;
+    //ExpandableListView songsListView;
+    ListView songsListView;
     private ArrayList<SongModel> songs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +112,8 @@ public class ListOfSongsActivity extends AppCompatActivity {
         db.songDAO().insertSongs(songs.toArray(new SongModel[0]));
         songs.clear();
         songs.addAll(db.songDAO().loadAllSongs());
-        songsListView.setAdapter(new SongAdapter(ListOfSongsActivity.this, songs));
+        songsListView.setAdapter(new CustomAdapter());
+        //songsListView.setAdapter(new SongAdapter(ListOfSongsActivity.this, songs));
     }
 
     @Override
@@ -136,5 +151,73 @@ public class ListOfSongsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_list_of_songs, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private class CustomAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return songs.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            view = getLayoutInflater().inflate(R.layout.song_list_parent_layout, null);
+            final SongModel song = (SongModel) songs.get(i);
+            // Lookup view for data population
+            TextView songNameTextView = view.findViewById(R.id.listOfSongs_SongName);
+            TextView songPriceTextView = view.findViewById(R.id.listOfSongs_SongPrice);
+
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            mmr.setDataSource(song.getFilePath());
+
+            String songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+            Double songPrice = song.getPrice();
+
+            songNameTextView.setText(songName);
+
+
+            if (songPrice < 0) {
+                songPriceTextView.setText("");
+            } else {
+                String priceString = "";
+                if (songPrice > 0)
+                    priceString = String.format(Locale.CANADA, "%2.2f %s", songPrice, song.getCurrency());
+                else
+                    priceString = getString(R.string.wordForFree);
+
+                SpannableString spannableString = new SpannableString(priceString);
+                ClickableSpan clickableSpan = new ClickableSpan() {
+                    @Override
+                    public void onClick(View textView) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(song.getStoreURL())));
+                    }
+                };
+                spannableString.setSpan(clickableSpan, 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                songPriceTextView.setText(spannableString, TextView.BufferType.SPANNABLE);
+                songPriceTextView.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = new Intent(ListOfSongsActivity.this, SongDetailsActivity.class);
+                    intent.putExtra("SelectedSongFilePath", song.getFilePath());
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                }
+            });
+
+            return view;
+        }
     }
 }
