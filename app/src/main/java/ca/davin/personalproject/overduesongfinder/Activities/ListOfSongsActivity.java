@@ -18,25 +18,46 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import ca.davin.personalproject.overduesongfinder.Adapters.SongAdapter;
+import ca.davin.personalproject.overduesongfinder.Database.AppDatabase;
 import ca.davin.personalproject.overduesongfinder.Database.SongModel;
 import ca.davin.personalproject.overduesongfinder.R;
 
 public class ListOfSongsActivity extends AppCompatActivity {
+    private AppDatabase db;
+
+    private final int MY_PERMISSIONS_READ_EXTERNAL_STORAGE=1;
 
     ExpandableListView songsListView;
-    private final int MY_PERMISSIONS_READ_EXTERNAL_STORAGE=1;
+    private ArrayList<SongModel> songs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_songs);
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        db = AppDatabase.getInstance(this);
+
+
+        // Clear data code
+        /*
+        List<SongModel> songModels = db.songDAO().loadAllSongs();
+
+        for (SongModel s : songModels) {
+            File file = new File(s.getFilePath());
+            file.delete();
+        }
+
+        db.songDAO().deleteSongs(songModels.toArray(new SongModel[0]));
+        */
+
 
         songsListView = findViewById(R.id.listOfSongs_listView);
 
-        ArrayList<SongModel> songs = new ArrayList<>();
+        songs = new ArrayList<>();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 // No explanation needed; request the permission
@@ -51,6 +72,7 @@ public class ListOfSongsActivity extends AppCompatActivity {
     private ArrayList<SongModel> getMP3Files(String rootPath) {
         ArrayList<SongModel> fileList = new ArrayList<>();
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        SongModel songModel = null;
         try {
             File rootFolder = new File(rootPath);
             File[] files = rootFolder.listFiles(); //here you will get NPE if directory doesn't contains  any file,handle it like this.
@@ -63,7 +85,7 @@ public class ListOfSongsActivity extends AppCompatActivity {
                     }
                 } else if (file.getName().endsWith(".mp3")) {
                     mmr.setDataSource(file.getAbsolutePath());
-                    SongModel songModel = new SongModel(file.getAbsolutePath());
+                    songModel = new SongModel(file.getAbsolutePath());
                     fileList.add(songModel);
                 }
             }
@@ -73,6 +95,9 @@ public class ListOfSongsActivity extends AppCompatActivity {
         return fileList;
     }
     private void setUpListView(ArrayList<SongModel> songs) {
+        db.songDAO().insertSongs(songs.toArray(new SongModel[0]));
+        songs.clear();
+        songs.addAll(db.songDAO().loadAllSongs());
         songsListView.setAdapter(new SongAdapter(ListOfSongsActivity.this, songs));
     }
 
@@ -83,7 +108,8 @@ public class ListOfSongsActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
-                    getMP3Files(Environment.getExternalStorageDirectory().getPath());
+                    songs = getMP3Files(Environment.getExternalStorageDirectory().getPath());
+                    setUpListView(songs);
                 }
             }
         }

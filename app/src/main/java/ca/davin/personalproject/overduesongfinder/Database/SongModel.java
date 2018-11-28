@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 @Entity(tableName = "Songs")
 public class SongModel {
@@ -13,7 +14,10 @@ public class SongModel {
     private String filePath = "";
 
     @ColumnInfo(name = "price")
-    private Double price;
+    private double price = -1;
+
+    @ColumnInfo(name = "currency")
+    private String currency;
 
     @ColumnInfo(name = "storeURL")
     private String storeURL;
@@ -31,15 +35,15 @@ public class SongModel {
         }
     }
 
+    @NonNull
+    public String getFilePath() {
+        return this.filePath;
+    }
+
     public void setPrice(double price) {
         if (price >= 0) {
             this.price = price;
         }
-    }
-
-    @NonNull
-    public String getFilePath() {
-        return this.filePath;
     }
 
     public Double getPrice() {
@@ -50,6 +54,16 @@ public class SongModel {
         if (storeName != null) {
             this.storeName = storeName;
         }
+    }
+
+    public void setCurrency(String currency) {
+        if (currency != null) {
+            this.currency = currency;
+        }
+    }
+
+    public String getCurrency() {
+        return this.currency;
     }
 
     public String getStoreName() {

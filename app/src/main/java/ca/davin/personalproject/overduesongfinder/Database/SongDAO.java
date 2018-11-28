@@ -15,11 +15,11 @@ import ca.davin.personalproject.overduesongfinder.Database.SongModel;
 
 @Dao
 public interface SongDAO {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insertSongs(SongModel... songs);
 
     @Query("SELECT * FROM Songs")
-    public SongModel[] loadAllSongs();
+    public List<SongModel> loadAllSongs();
 
     @Query("SELECT * FROM Songs WHERE filePath = :filePath LIMIT 1")
     public SongModel find(String filePath);

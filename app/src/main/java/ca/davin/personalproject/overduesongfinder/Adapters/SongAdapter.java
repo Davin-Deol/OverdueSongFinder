@@ -144,12 +144,12 @@ public class SongAdapter extends BaseExpandableListAdapter {
         Double songPrice = song.getPrice();
 
         songNameTextView.setText(songName);
-        if (songPrice == null)
+        if (songPrice < 0)
             songPriceTextView.setText("");
         else if (songPrice > 0)
-            songPriceTextView.setText(String.format(Locale.CANADA, "%2.2f", songPrice));
+            songPriceTextView.setText(String.format(Locale.CANADA, "%2.2f %s", songPrice, song.getCurrency()));
         else
-            songPriceTextView.setText("FREE");
+            songPriceTextView.setText(context.getString(R.string.wordForFree));
 
         // Return the completed view to render on screen
         return convertView;

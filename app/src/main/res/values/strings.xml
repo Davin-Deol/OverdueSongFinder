@@ -17,4 +17,7 @@
     <string name="songDetails_Genre">Genre</string>
     <string name="songDetails_Composer">Composer</string>
     <string name="songDetails_Year">Year</string>
+
+    <string name="wordForPrice">Price</string>
+    <string name="wordForFree">FREE</string>
 </resources>
