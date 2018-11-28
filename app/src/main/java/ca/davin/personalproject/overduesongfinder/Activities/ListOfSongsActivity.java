@@ -3,6 +3,8 @@ package ca.davin.personalproject.overduesongfinder.Activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Environment;
@@ -24,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -175,11 +178,23 @@ public class ListOfSongsActivity extends AppCompatActivity {
             view = getLayoutInflater().inflate(R.layout.song_list_parent_layout, null);
             final SongModel song = (SongModel) songs.get(i);
             // Lookup view for data population
+            ImageView songArtView = view.findViewById(R.id.listOfSongs_artImageView);
             TextView songNameTextView = view.findViewById(R.id.listOfSongs_SongName);
             TextView songPriceTextView = view.findViewById(R.id.listOfSongs_SongPrice);
 
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
             mmr.setDataSource(song.getFilePath());
+
+            byte [] data = mmr.getEmbeddedPicture();
+            if(data != null)
+            {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                songArtView.setImageBitmap(bitmap); //associated cover art in bitmap
+            }
+            else
+            {
+                songArtView.setImageResource(R.drawable.ic_music_note_24dp); //any default cover resourse folder
+            }
 
             String songName = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
             Double songPrice = song.getPrice();
@@ -208,6 +223,9 @@ public class ListOfSongsActivity extends AppCompatActivity {
                 songPriceTextView.setMovementMethod(LinkMovementMethod.getInstance());
             }
 
+            //songArtView.setMaxHeight(songNameTextView.getHeight());
+            //int h = songArtView.getHeight();
+            //int h2 = songNameTextView.getHeight();
             view.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Intent intent = new Intent(ListOfSongsActivity.this, SongDetailsActivity.class);

@@ -23,6 +23,15 @@
         <item name="android:ems">10</item>
         <item name="android:padding">@dimen/activity_vertical_margin</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="ListOfSongsImageView">
+        <item name="android:paddingStart">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingEnd">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingTop">@dimen/listOfSongs_art_verticalMargin</item>
+        <item name="android:paddingBottom">@dimen/listOfSongs_art_verticalMargin</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
     <style name="SongDetails_StoreInfo">
