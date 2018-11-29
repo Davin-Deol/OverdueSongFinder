@@ -6,6 +6,7 @@ buildType=$2
 storePass=$3
 keyAlias=$4
 keyPass=$5
+
 # helper method
 setProperty() {
 	sed -i.bak -e "s/\($1 *= *\).*/\1$2/" ${propertiesFile}
@@ -20,11 +21,11 @@ chmod +x ${propertiesFile}
 # update key properties based on build type
 if [ $buildType = 'debug' ]; then
 	(setProperty "KEYSTORE" "debug.keystore")
-	(setProperty "STORE_PASSWORD" "5k!FrXmRr$SN!&gkatDYU^9ajr%$pd")
-	(setProperty "KEY_ALIAS" "OverdueSongFinderKey")
-	(setProperty "KEY_PASSWORD" "5k!FrXmRr$SN!&gkatDYU^9ajr%$pd")
+	(setProperty "STORE_PASSWORD" "123456")
+	(setProperty "KEY_ALIAS" "my_alias")
+	(setProperty "KEY_PASSWORD" "123456")
 elif [ $buildType = 'release' ]; then
-	(setProperty "KEYSTORE" "OverdueSongFinderKey")
+	(setProperty "KEYSTORE" "release.keystore")
 	(setProperty "STORE_PASSWORD" "$storePass")
 	(setProperty "KEY_ALIAS" "$keyAlias")
 	(setProperty "KEY_PASSWORD" "$keyPass")
@@ -40,7 +41,7 @@ if [ $buildType = 'debug' ]; then
 elif [ $buildType = 'release' ]; then
 	./gradlew assembleRelease --stacktrace
 fi
-echo $buildType
+
 # -----------------------------------------------------------------
 # -------------------------- POST BUILD ---------------------------
 # -----------------------------------------------------------------
@@ -56,4 +57,21 @@ fi
 cp app/build/outputs/apk/$buildType/$apkFileName artifacts/
 
 cat << "EOF"
+             ,
+         (`.  : \               __..----..__
+          `.`.| |:          _,-':::''' '  `:`-._
+            `.:\||       _,':::::'         `::::`-.
+              \\`|    _,':::::::'     `:.     `':::`.
+               ;` `-''  `::::::.                  `::\
+            ,-'      .::'  `:::::.         `::..    `:\
+          ,' /_) -.            `::.           `:.     |
+        ,'.:     `    `:.        `:.     .::.          \
+   __,-'   ___,..-''-.  `:.        `.   /::::.         |
+  |):'_,--'           `.    `::..       |::::::.      ::\
+   `-'                 |`--.:_::::|_____\::::::::.__  ::|
+                       |   _/|::::|      \::::::|::/\  :|
+                       /:./  |:::/        \__:::):/  \  :\
+                     ,'::'  /:::|        ,'::::/_/    `. ``-.__
+                    ''''   (//|/\      ,';':,-'         `-.__  `'--..__
+                                                             `''---::::'
 EOF

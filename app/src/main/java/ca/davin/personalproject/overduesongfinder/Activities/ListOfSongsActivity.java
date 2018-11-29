@@ -60,6 +60,7 @@ public class ListOfSongsActivity extends AppCompatActivity {
 
 
         // Clear data code
+
         /*
         List<SongModel> songModels = db.songDAO().loadAllSongs();
 
@@ -68,8 +69,10 @@ public class ListOfSongsActivity extends AppCompatActivity {
             file.delete();
         }
 
+
         db.songDAO().deleteSongs(songModels.toArray(new SongModel[0]));
         */
+
 
 
         songsListView = findViewById(R.id.listOfSongs_listView);
