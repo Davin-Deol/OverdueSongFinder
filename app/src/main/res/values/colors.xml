@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorLightOrange">#ffb04b</color>
+    <color name="colorOrange">#ff9a18</color>
+    <color name="colorOrangeDark">#ef4800</color>
+
+    <color name="colorLightBlue">#4d85ff</color>
+    <color name="colorBlue">#3374ff</color>
+    <color name="colorBlueDark">#0039b3</color>
+
+    <color name="windowColor">#555555</color>
+    <color name="textOnPrimary">#FFFFFF</color>
+    <color name="overflowBackgroundColor">@color/colorAccent</color>
+</resources>

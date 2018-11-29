@@ -1,0 +1,43 @@
+<resources>
+    <style name="ListOfSongs" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorOrange</item>
+        <item name="colorPrimaryDark">@color/colorOrangeDark</item>
+        <item name="colorAccent">@color/colorBlue</item>
+        <item name="android:windowBackground">@drawable/window_background_gradient_orange</item>
+    </style>
+
+    <style name="SongDetails" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorBlue</item>
+        <item name="colorPrimaryDark">@color/colorBlueDark</item>
+        <item name="colorAccent">@color/colorOrange</item>
+        <item name="android:windowBackground">@drawable/window_background_gradient_blue</item>
+    </style>
+
+    <style name="OverflowTheme">
+        <item name="android:colorBackground">@color/overflowBackgroundColor</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="ListOfSongsTextView">
+        <item name="android:maxLines">1</item>
+        <item name="android:ems">10</item>
+        <item name="android:padding">@dimen/activity_vertical_margin</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="ListOfSongsImageView">
+        <item name="android:paddingStart">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingEnd">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingTop">@dimen/listOfSongs_art_verticalMargin</item>
+        <item name="android:paddingBottom">@dimen/listOfSongs_art_verticalMargin</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="SongDetails_StoreInfo">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+</resources>

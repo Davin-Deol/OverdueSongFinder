@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_findSong"
+        android:icon="@drawable/ic_language_24dp"
+        android:title="@string/menu_findSong"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_saveSong"
+        android:icon="@drawable/ic_save_24dp"
+        android:title="@string/menu_saveSong"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_purchaseSong"
+        android:icon="@drawable/ic_attach_money_24dp"
+        android:title="@string/menu_purchaseSong"
+        app:showAsAction="ifRoom"/>
+
+</menu>

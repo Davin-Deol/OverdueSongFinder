@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">OverdueSongFinder</string>
+    <string name="listOfSongsLabel">List of Songs</string>
+    <string name="menu_info">About This App</string>
+    <string name="menu_findSongs">Find Songs</string>
+    <string name="menu_purchase">Purchase Songs</string>
+    <string name="menu_findSong">Find Song</string>
+    <string name="menu_purchaseSong">Purchase Song</string>
+    <string name="menu_saveSong">Save Song</string>
+    <string name="defaultSongName">Sample</string>
+    <string name="defaultSongPrice">Undetermined</string>
+
+    <string name="songDetails_Title">Title</string>
+    <string name="songDetails_Artist">Artist</string>
+    <string name="songDetails_Album">Album</string>
+    <string name="songDetails_AlbumArtist">Album Artist</string>
+    <string name="songDetails_Genre">Genre</string>
+    <string name="songDetails_Composer">Composer</string>
+    <string name="songDetails_Year">Year</string>
+
+    <string name="wordForPrice">Price</string>
+    <string name="wordForFree">FREE</string>
+</resources>
