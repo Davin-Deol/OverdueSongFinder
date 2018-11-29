@@ -113,8 +113,8 @@ public class ListOfSongsActivity extends AppCompatActivity {
     }
     private void setUpListView(ArrayList<SongModel> songs) {
         db.songDAO().insertSongs(songs.toArray(new SongModel[0]));
-        songs.clear();
-        songs.addAll(db.songDAO().loadAllSongs());
+        //songs.clear();
+        //songs.addAll(db.songDAO().loadAllSongs());
         songsListView.setAdapter(new CustomAdapter());
         //songsListView.setAdapter(new SongAdapter(ListOfSongsActivity.this, songs));
     }
@@ -176,14 +176,15 @@ public class ListOfSongsActivity extends AppCompatActivity {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             view = getLayoutInflater().inflate(R.layout.song_list_parent_layout, null);
-            final SongModel song = (SongModel) songs.get(i);
+            final SongModel song = (SongModel) db.songDAO().find(songs.get(i).getFilePath());
             // Lookup view for data population
             ImageView songArtView = view.findViewById(R.id.listOfSongs_artImageView);
             TextView songNameTextView = view.findViewById(R.id.listOfSongs_SongName);
             TextView songPriceTextView = view.findViewById(R.id.listOfSongs_SongPrice);
 
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-            mmr.setDataSource(song.getFilePath());
+            String c = song.getFilePath();
+            mmr.setDataSource(c);
 
             byte [] data = mmr.getEmbeddedPicture();
             if(data != null)

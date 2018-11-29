@@ -244,6 +244,7 @@ public class SongDetailsActivity extends AppCompatActivity implements PossibleSo
                         @Override
                         public void onResponse(String response) {
                             try {
+                                String priceString = getString(R.string.wordForPrice) + ": ";
                                 responseJSON = new JSONObject(response);
                                 final JSONObject resultJSONObject = responseJSON.getJSONArray("results").getJSONObject(0);
 
@@ -260,7 +261,12 @@ public class SongDetailsActivity extends AppCompatActivity implements PossibleSo
                                 currentSong.setStoreName("iTunes");
                                 currentSong.setStoreURL(resultJSONObject.getString("trackViewUrl"));
                                 currentSong.setCurrency(resultJSONObject.getString("currency"));
-                                String priceString = getString(R.string.wordForPrice) + ": " + resultJSONObject.getString("trackPrice") + " " + resultJSONObject.getString("currency");
+
+                                if (resultJSONObject.getDouble("trackPrice") >= 0)
+                                    priceString += resultJSONObject.getString("trackPrice") + " " + resultJSONObject.getString("currency");
+                                else
+                                    priceString += "n/a";
+
                                 priceTextView.setText(priceString);
                                 SpannableString spannableString = new SpannableString("Store: iTunes");
                                 ClickableSpan clickableSpan = new ClickableSpan() {
@@ -288,7 +294,9 @@ public class SongDetailsActivity extends AppCompatActivity implements PossibleSo
                                     albumArtistTextInputLayout.getEditText().setText(resultJSONObject.getString("artistName"));
                                 if (genreTextInputLayout.getEditText() != null)
                                     genreTextInputLayout.getEditText().setText(resultJSONObject.getString("primaryGenreName"));
-                                currentSong.setPrice(resultJSONObject.getDouble("trackPrice"));
+
+                                if (resultJSONObject.getDouble("trackPrice") >= 0)
+                                    currentSong.setPrice(resultJSONObject.getDouble("trackPrice"));
 
                                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
                                 Date date = format.parse(resultJSONObject.getString("releaseDate"));
@@ -349,7 +357,7 @@ public class SongDetailsActivity extends AppCompatActivity implements PossibleSo
         }
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
         private ProgressDialog mDialog;
         private ImageView bmImage;
